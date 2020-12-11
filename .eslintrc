@@ -103,6 +103,7 @@
     "no-shadow": "off",
     "import/no-anonymous-default-export": "off",
     "@typescript-eslint/comma-dangle": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/no-unused-prop-types": "warn"
   }
 }

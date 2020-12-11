@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import loadSpin from 'assets/icons/load-spin.png';
+import loadSpin from 'assets/load-spin.png';
 
 const rotate = keyframes`
     to {

@@ -4,14 +4,16 @@ export const GET_ARTISTS = gql`
   query getArtists($artist: String!) {
     search {
       artists(query: $artist) {
+        totalCount
         nodes {
           name
           mbid
           releases {
-            nodes {
-              title
-              mbid
-            }
+            totalCount
+            // nodes {
+            //   title
+            //   mbid
+            // }
           }
         }
       }
