@@ -9,10 +9,10 @@ const rotate = keyframes`
 `;
 
 const StyledSpinner = styled.div`
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   img {
-    animation: ${rotate} 2.6s linear infinite;
+    animation: ${rotate} 3.6s linear infinite;
   }
 `;
 

@@ -104,6 +104,7 @@
     "import/no-anonymous-default-export": "off",
     "@typescript-eslint/comma-dangle": "off",
     "react/require-default-props": "off",
-    "react/no-unused-prop-types": "warn"
+    "react/no-unused-prop-types": "warn",
+    "react/no-array-index-key": "off"
   }
 }

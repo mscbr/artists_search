@@ -78,7 +78,7 @@ const Button = ({
   onClick,
   loading,
   disabled,
-  className,
+  className
 }: Props) => {
   return (
     <StyledButton

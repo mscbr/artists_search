@@ -25,7 +25,7 @@ interface Props {
   margin?: string;
 }
 
-const Surface: React.FC<Props> = props => {
+const Surface: React.FC<Props> = (props) => {
   return <StyledSurface {...props}>{props.children}</StyledSurface>;
 };
 

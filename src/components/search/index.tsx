@@ -16,18 +16,15 @@ const StyledSearch = styled.div<{
   }
   label {
     position: absolute;
-    bottom: 1em;
-    left: 8px;
+    bottom: 0.8em;
+    left: 0.6em;
     font-size: ${theme.typography.fontSize[16]};
     font-weight: ${theme.typography.fontWeight.light};
     letter-spacing: ${theme.typography.letterSpacing[1]};
     color: ${theme.palette.label};
     transition: font-size 0.2s;
     @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
-      font-size: ${({ active, value }) =>
-        !active && !value
-          ? `${theme.typography.fontSize[18]}`
-          : `${theme.typography.fontSize[14]}`};
+      font-size: ${theme.typography.fontSize[18]};
     }
     overflow: hidden;
     text-overflow: ellipsis;
@@ -59,7 +56,7 @@ const StyledSearch = styled.div<{
     @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
       font-size: ${theme.typography.fontSize[18]};
     }
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   input[type='date'] {
@@ -77,20 +74,21 @@ const StyledSearch = styled.div<{
 
   .inputIcon {
     position: absolute;
-    width: 24px;
-    height: 24px;
-    right: 0;
-    top: 0;
+    width: 20px;
+    height: 20px;
+    right: 4px;
+    top: 3px;
     &:hover {
       cursor: pointer;
     }
   }
   .helperText {
     color: ${theme.palette.pink};
-    font-size: ${theme.typography.fontSize[16]};
+    font-size: ${theme.typography.fontSize[12]};
     font-weight: ${theme.typography.fontWeight.light};
+    margin-left: 4px;
     @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
-      font-size: ${theme.typography.fontSize[18]};
+      font-size: ${theme.typography.fontSize[14]};
     }
   }
 `;

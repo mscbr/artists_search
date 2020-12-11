@@ -1,10 +1,27 @@
+import { IPageInfo } from './response';
+
 export interface IArtist {
-  name: string;
   mbid: string;
+  name: string;
+  type: string;
+  country: string;
   releases: {
-    nodes: IRelease[];
+    totalCount: number;
+  };
+  discogs: {
+    profile: string;
   };
 }
+
+export interface IArtistsSearch {
+  search: {
+    artists: {
+      pageInfo: IPageInfo;
+      nodes: IArtist[];
+    };
+  };
+}
+
 export interface IRelease {
   title: string;
   mbid: string;
