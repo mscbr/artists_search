@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import loadSpin from 'assets/icons/load-spin.png';
+import loadSpin from 'assets/load-spin.png';
 
 const rotate = keyframes`
     to {
@@ -9,10 +9,10 @@ const rotate = keyframes`
 `;
 
 const StyledSpinner = styled.div`
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   img {
-    animation: ${rotate} 2.6s linear infinite;
+    animation: ${rotate} 3.6s linear infinite;
   }
 `;
 

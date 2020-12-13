@@ -1,17 +1,24 @@
 import { gql } from '@apollo/client';
 
 export const GET_ARTISTS = gql`
-  query getArtists($artist: String!) {
+  query getArtists($artist: String!, $after: String) {
     search {
-      artists(query: $artist) {
+      artists(query: $artist, after: $after) {
+        pageInfo {
+          endCursor
+        }
+        totalCount
         nodes {
+          id
           name
           mbid
+          type
+          country
           releases {
-            nodes {
-              title
-              mbid
-            }
+            totalCount
+          }
+          discogs {
+            profile
           }
         }
       }
