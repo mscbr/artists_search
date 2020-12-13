@@ -12,26 +12,19 @@ const StyledButton = styled.button<{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ size }) => (size === 'large' ? '240px' : '100px')};
+  width: ${({ size }) => (size === 'large' ? '240px' : '72px')};
   height: ${({ size }) => (size === 'large' ? '57px' : '32px')};
   opacity: ${({ disabled }) => (disabled ? 0.3 : 'initial')};
   background: ${({ color }) => {
-    if (color === 'edit') {
-      return `${theme.palette.editButton.surface}`;
+    if (color === 'dark') {
+      return `${theme.palette.data}`;
     }
-    if (color === 'secondary') {
-      return `${theme.palette.pink}`;
-    }
-    if (color === 'error') {
-      return `${theme.palette.underlineActive}`;
-    }
-    return `${theme.palette.green}`;
+    return `${theme.palette.surface}`;
   }};
   color: ${({ color }) =>
-    color === 'edit'
-      ? `${theme.palette.editButton.label}`
-      : `${theme.palette.surface}`};
-  border: none;
+    color === 'dark' ? `${theme.palette.surface}` : `${theme.palette.data}`};
+  filter: ${({ color }) => (color === 'dark' ? 'invert(1)' : 'invert(0)')};
+  border: 0.5px solid ${theme.palette.data};
   border-radius: 5px;
   letter-spacing: ${theme.typography.letterSpacing[1]};
   font-family: ${theme.typography.fontFamily.hind};
@@ -46,17 +39,21 @@ const StyledButton = styled.button<{
       if (disabled) {
         return;
       }
-      if (color === 'secondary') {
-        return `${theme.palette.pinkHover}`;
+      if (color === 'dark') {
+        return `${theme.palette.surface}`;
       }
-      if (color === 'edit') {
-        return `${theme.palette.editButton.hover}`;
-      }
-      if (color === 'error') {
-        return `${theme.palette.underlineActive}`;
-      }
-      return `${theme.palette.greenHover}`;
+      return `${theme.palette.dataHover}`;
     }};
+    color: ${({ color, disabled }) => {
+      if (disabled) {
+        return;
+      }
+      if (color === 'dark') {
+        return `${theme.palette.dataHover}`;
+      }
+      return `${theme.palette.surface}`;
+    }};
+    filter: invert(1);
   }
   transition: 0.3s;
 `;
@@ -64,7 +61,7 @@ const StyledButton = styled.button<{
 interface Props {
   color?: string;
   size?: string;
-  label: string;
+  label: string | JSX.Element;
   onClick?: () => void;
   loading?: boolean;
   disabled?: boolean;
@@ -88,7 +85,7 @@ const Button = ({
       disabled={loading || disabled}
       className={className}
     >
-      {!loading ? label && label.toUpperCase() : <Spinner />}
+      {!loading ? label && label : <Spinner />}
     </StyledButton>
   );
 };

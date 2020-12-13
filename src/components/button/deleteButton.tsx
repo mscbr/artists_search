@@ -1,28 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import theme from 'themming';
-import iconDelete from 'assets/icons/icon-delete.png';
+import heartMinus from 'assets/heart-minus.png';
 
 const StyledButton = styled.button`
   height: 24px;
-  color: ${theme.palette.pink};
   background: transparent;
   display: flex;
   align-items: center;
-  font-family: ${theme.typography.fontFamily.hind};
-  font-size: ${theme.typography.fontSize[12]};
-  font-weight: ${theme.typography.fontWeight.medium};
-  letter-spacing: ${theme.typography.letterSpacing[1]};
   border: none;
-  span {
-    margin-left: 12px;
-    margin-top: 4px;
-  }
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
+    filter: blur(1px);
   }
+  cursor: pointer;
   transition: 0.3s;
+`;
+const StyledIcon = styled.img`
+  height: 26px;
+  width: 26px;
 `;
 
 interface Props {
@@ -32,8 +27,7 @@ interface Props {
 const DeleteButton = ({ onClick }: Props) => {
   return (
     <StyledButton onClick={onClick}>
-      <img src={iconDelete} alt="Delete icon" />
-      <span>DELETE EVENT</span>
+      <StyledIcon src={heartMinus} alt="Remove favourite icon" />
     </StyledButton>
   );
 };
