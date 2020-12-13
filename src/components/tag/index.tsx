@@ -5,8 +5,10 @@ import theme from 'themming';
 
 const StyledTag = styled.div<Props>`
   color: ${theme.palette.dropdown};
+  min-width: 60%;
   font-weight: ${theme.typography.fontWeight.light};
-  padding: 12px;
+  font-size: ${theme.typography.fontSize[12]};
+  padding: 4px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -14,15 +16,30 @@ const StyledTag = styled.div<Props>`
   border-radius: 25px;
   background: ${({ outline }) =>
     outline ? theme.palette.surface : theme.palette.editButton.surface};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+    background: ${({ outline }) =>
+      outline ? theme.palette.editButton.surface : theme.palette.surface};
+  }
+  @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
+    padding: 12px;
+  }
 `;
 
 interface Props {
   children?: string;
   outline?: boolean;
+  onClick?: () => void;
 }
 
-const Tag: React.FC<Props> = ({ children, outline }) => {
-  return <StyledTag outline={outline}>{children}</StyledTag>;
+const Tag: React.FC<Props> = ({ children, outline, onClick }) => {
+  return (
+    <StyledTag onClick={onClick} outline={outline}>
+      {children}
+    </StyledTag>
+  );
 };
 
 export default Tag;

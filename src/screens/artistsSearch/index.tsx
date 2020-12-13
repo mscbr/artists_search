@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -6,10 +7,14 @@ import { Waypoint } from 'react-waypoint';
 
 import { GET_ARTISTS } from 'api/handlers/artists';
 import theme from 'themming';
+import { AppState } from 'store';
+import FAV_ACTIONS from 'store/favourites/actions';
+import Layout from 'components/layout';
 import Search from 'components/search';
 import Spinner from 'components/spinner';
-import Event from 'components/artist';
+import Artist from 'components/artist';
 import { IArtistsSearch } from 'types/artist';
+import { IFavArtist } from 'store/favourites/types';
 
 const StyledTitle = styled.div`
   text-align: center;
@@ -37,6 +42,10 @@ const StyledList = styled.div`
 `;
 
 const ArtistsSearch = () => {
+  const dispatch = useDispatch();
+  const favourites = useSelector(
+    (state: AppState) => state.favReducer.favourites
+  )?.map((item: { name: string; mbid: string }) => item.mbid);
   const [searchValue, setSearchValue] = useState<string>('');
   const [
     getArtists,
@@ -74,11 +83,16 @@ const ArtistsSearch = () => {
     });
   };
 
+  const handleFavClick = (artist: IFavArtist, isFav: boolean) => {
+    if (isFav) return dispatch(FAV_ACTIONS.FAV_REMOVE(artist));
+    dispatch(FAV_ACTIONS.FAV_ADD(artist));
+  };
+
   const artists = searchValue && data?.search?.artists?.nodes;
 
   return (
-    <StyledContainer>
-      <>
+    <Layout home>
+      <StyledContainer>
         <StyledTitle>ARTIST SEARCH</StyledTitle>
         <StyledSearchContainer>
           <Search
@@ -91,22 +105,32 @@ const ArtistsSearch = () => {
             helperText={(error && 'Failed to load data') || ''}
           />
         </StyledSearchContainer>
-      </>
-      <StyledList>
-        {artists &&
-          artists.map((artist, i) => {
-            return (
-              <React.Fragment key={`${artist.mbid}${i}`}>
-                <Event artist={artist} />
-                {i === artists.length - 1 && !!fetchMore && (
-                  <Waypoint onEnter={handleEnter} />
-                )}
-              </React.Fragment>
-            );
-          })}
-        {networkStatus === 3 && <Spinner />}
-      </StyledList>
-    </StyledContainer>
+        <StyledList>
+          {artists &&
+            artists.map((artist, i) => {
+              const isFav = favourites && favourites.includes(artist.mbid);
+              return (
+                <React.Fragment key={`${artist.mbid}${i}`}>
+                  <Artist
+                    artist={artist}
+                    isFav={isFav}
+                    onClick={() =>
+                      handleFavClick(
+                        { name: artist.name, mbid: artist.mbid },
+                        isFav
+                      )
+                    }
+                  />
+                  {i === artists.length - 1 && !!fetchMore && (
+                    <Waypoint onEnter={handleEnter} />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          {networkStatus === 3 && <Spinner />}
+        </StyledList>
+      </StyledContainer>
+    </Layout>
   );
 };
 

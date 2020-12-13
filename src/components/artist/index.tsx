@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,8 +11,10 @@ import Subtitle from 'components/typography/subtitle';
 import Description from 'components/typography/description';
 import Releases from 'components/artist/parts/releases';
 import Button from 'components/button';
-import { IArtist } from 'types/artist';
 import Surface from 'components/surface';
+import iconHeartPlus from 'assets/heart-plus.png';
+import iconHeartMinus from 'assets/heart-minus.png';
+import { IArtist } from 'types/artist';
 
 const StyledGridView = styled.div`
   display: flex;
@@ -47,10 +49,15 @@ const StyledFooter = styled.div`
   padding-top: 4px;
   margin: auto auto 0;
 `;
+const StyledButtonLabel = styled.img`
+  height: 26px;
+  width: 26px;
+`;
 
 interface Props {
   artist: IArtist;
   onClick?: () => void;
+  isFav?: boolean;
 }
 
 const Artist = ({
@@ -62,7 +69,8 @@ const Artist = ({
     releases: { totalCount },
     discogs
   },
-  onClick
+  onClick,
+  isFav
 }: Props) => {
   const history = useHistory();
   const {
@@ -70,13 +78,6 @@ const Artist = ({
   } = history;
   const titleLink = pathname.indexOf('/event/') === -1; // clickable card
   const upMobile = useWindowWidth() > theme.breakpoints.mobile;
-  // const mbid = useSelector((state: AppState) => state.favourites);
-  // const [loading, setLoading] = useState(false);
-  // const [btnLabel, btnColor, handleClick] = setButton(
-  //   id || '',
-  //   ownerId,
-  //   attendees.map((user) => user.id)
-  // );
 
   const surfaceSize = () => {
     if (upMobile)
@@ -93,12 +94,8 @@ const Artist = ({
     };
   };
 
-  const handleEventAction = useCallback(async () => {
-    // adding favourite to the local store
-    // setLoading(true);
-    // await handleClick(eventId);
-    // if (onClick) onClick();
-    // setLoading(false);
+  const handleEventAction = useCallback(() => {
+    if (onClick) onClick();
   }, [onClick]);
 
   return (
@@ -119,8 +116,20 @@ const Artist = ({
         <StyledFooter>
           <Releases releases={totalCount} />
           <Button
-            label={mbid ? 'ADD' : 'REMOVE'}
-            // color={btnColor}
+            label={
+              !isFav ? (
+                <StyledButtonLabel
+                  src={iconHeartPlus}
+                  alt="Add to favourites icone"
+                />
+              ) : (
+                <StyledButtonLabel
+                  src={iconHeartMinus}
+                  alt="Remove from favourites icone"
+                />
+              )
+            }
+            color={isFav ? 'dark' : ''}
             onClick={handleEventAction}
           />
         </StyledFooter>
@@ -130,8 +139,7 @@ const Artist = ({
 };
 
 function compareProps(prevEvent: Props, nextEvent: Props) {
-  // implement LODASH!
-  return true; // deepCompareObj(prevEvent, nextEvent);
+  return _.isEqual(prevEvent, nextEvent);
 }
 
 export default React.memo(Artist, compareProps);

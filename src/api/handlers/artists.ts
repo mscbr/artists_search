@@ -9,7 +9,6 @@ export const GET_ARTISTS = gql`
         }
         totalCount
         nodes {
-          id
           name
           mbid
           type
