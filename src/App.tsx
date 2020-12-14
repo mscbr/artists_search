@@ -8,7 +8,7 @@ const App = () => {
   return (
     <>
       <Switch>
-        <Route exact path="/" component={ArtistSearch} />
+        <Route exact path="/artists/:searchVal?" component={ArtistSearch} />
         <Route exact path="/artist/:mbid" component={ArtistDetail} />
         <Route>{() => <span>Page not found</span>}</Route>
       </Switch>

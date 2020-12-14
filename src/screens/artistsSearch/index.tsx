@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -40,10 +41,12 @@ const StyledList = styled.div`
 `;
 
 const ArtistsSearch = () => {
+  const history = useHistory();
+  const { searchVal } = useParams<{ searchVal: string }>();
   const favourites = useSelector(
     (state: AppState) => state.favReducer.favourites
   )?.map((item: { name: string; mbid: string }) => item.mbid);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(searchVal || '');
   const [
     getArtists,
     { loading, data, fetchMore, networkStatus, error }
@@ -52,10 +55,10 @@ const ArtistsSearch = () => {
   });
 
   const fetch = useRef(
-    _.debounce(
-      (val: string) => getArtists({ variables: { artist: val, after: null } }),
-      500
-    )
+    _.debounce((val: string) => {
+      getArtists({ variables: { artist: val, after: null } });
+      history.push(`/artists/${val}`);
+    }, 500)
   ).current;
 
   const handleChange = ({
@@ -84,8 +87,12 @@ const ArtistsSearch = () => {
       }
     });
   };
-
   const artists = searchValue && data?.search?.artists?.nodes;
+
+  useEffect(() => {
+    if (searchValue && !data)
+      getArtists({ variables: { artist: searchValue, after: null } });
+  }, []);
 
   return (
     <Layout>
