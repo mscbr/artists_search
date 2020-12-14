@@ -5,7 +5,7 @@ import theme from 'themming';
 
 const StyledTag = styled.div<Props>`
   color: ${theme.palette.dropdown};
-  min-width: 60%;
+  max-width: 60%;
   font-weight: ${theme.typography.fontWeight.light};
   font-size: ${theme.typography.fontSize[12]};
   padding: 4px;

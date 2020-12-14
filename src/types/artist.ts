@@ -7,6 +7,8 @@ export interface IArtist {
   country: string;
   releases: {
     totalCount: number;
+    nodes?: IRelease[];
+    pageInfo?: IPageInfo;
   };
   discogs: {
     profile: string;
@@ -22,7 +24,13 @@ export interface IArtistsSearch {
   };
 }
 
+export interface IArtistDetail {
+  lookup: {
+    artist: IArtist;
+  };
+}
+
 export interface IRelease {
   title: string;
-  mbid: string;
+  id: string;
 }

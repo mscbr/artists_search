@@ -9,7 +9,8 @@ const StyledDrawer = styled.div<{ open?: boolean }>`
   top: 0;
   left: 0;
   height: 105%;
-  width: ${({ open }) => (open ? '83%' : '0')};
+  text-align: center;
+  width: ${({ open }) => (open ? '75%' : '0')};
   @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
     width: ${({ open }) => (open ? '33%' : '0')};
   }

@@ -1,4 +1,4 @@
-import React, { useState, ReactNodeArray } from 'react';
+import React, { useState, ReactNodeArray, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -65,23 +65,24 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleRemove = (artist: IFavArtist) => {
-    dispatch(FAV_ACTIONS.FAV_REMOVE(artist));
-  };
+  const favListMemo: ReactNodeArray = useMemo(() => {
+    return favourites.map((fav: IFavArtist) => {
+      return (
+        <StyledItem key={`fav${fav.mbid}`}>
+          <Tag onClick={() => history.push(`artist/${fav.mbid}`)} outline>
+            {fav.name}
+          </Tag>
+          <DeleteButton onClick={() => dispatch(FAV_ACTIONS.FAV_REMOVE(fav))} />
+        </StyledItem>
+      );
+    });
+  }, [favourites.length, dispatch, history]);
 
   return (
     <StyledLayout>
       <Drawer open={drawerOpen}>
         <StyledFavList>
-          {favourites &&
-            favourites.map((fav: IFavArtist) => {
-              return (
-                <StyledItem key={`fav${fav.mbid}`}>
-                  <Tag outline>{fav.name}</Tag>
-                  <DeleteButton onClick={() => handleRemove(fav)} />
-                </StyledItem>
-              );
-            })}
+          {favListMemo && favListMemo.map((item) => item)}
         </StyledFavList>
       </Drawer>
       <StyledHeader>

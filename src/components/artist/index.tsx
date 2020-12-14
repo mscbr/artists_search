@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ import Surface from 'components/surface';
 import iconHeartPlus from 'assets/heart-plus.png';
 import iconHeartMinus from 'assets/heart-minus.png';
 import { IArtist } from 'types/artist';
+import FAV_ACTIONS from 'store/favourites/actions';
 
 const StyledGridView = styled.div`
   display: flex;
@@ -31,14 +33,17 @@ const StyledTitle = styled.div<{ titleLink: boolean }>`
   }
   transition: 0.3s;
 `;
-const StyledDescription = styled.div`
+const StyledDescription = styled.div<{ detailView?: boolean }>`
   margin-top: 16px;
   text-align: justify;
   line-height: 20px;
-  max-height: 144px;
-  overflow: hidden;
+  max-height: ${({ detailView }) => (detailView ? 'auto' : '144px')};
+  overflow: scroll;
   @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
     text-align: left;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 const StyledFooter = styled.div`
@@ -58,6 +63,7 @@ interface Props {
   artist: IArtist;
   onClick?: () => void;
   isFav?: boolean;
+  detailView?: boolean;
 }
 
 const Artist = ({
@@ -69,44 +75,49 @@ const Artist = ({
     releases: { totalCount },
     discogs
   },
-  onClick,
-  isFav
+  isFav,
+  detailView
 }: Props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const {
     location: { pathname }
   } = history;
-  const titleLink = pathname.indexOf('/event/') === -1; // clickable card
+  const titleLink = pathname.indexOf('/artist/') === -1; // clickable card
   const upMobile = useWindowWidth() > theme.breakpoints.mobile;
 
   const surfaceSize = () => {
     if (upMobile)
       return {
-        height: '328px',
+        height: detailView ? 'auto' : '328px',
         width: 'auto',
         padding: '32px'
       };
 
     return {
-      height: '328px',
+      height: detailView ? 'auto' : '328px',
       width: '98%',
       padding: '24px'
     };
   };
 
-  const handleEventAction = useCallback(() => {
-    if (onClick) onClick();
-  }, [onClick]);
+  const handleEventAction = () => {
+    if (isFav) return dispatch(FAV_ACTIONS.FAV_REMOVE({ name, mbid }));
+    dispatch(FAV_ACTIONS.FAV_ADD({ name, mbid }));
+  };
 
   return (
     <Surface {...surfaceSize()}>
       <StyledGridView>
         <Detail>{country}</Detail>
-        <StyledTitle titleLink={titleLink}>
+        <StyledTitle
+          titleLink={titleLink}
+          onClick={() => titleLink && history.push(`artist/${mbid}`)}
+        >
           <Title>{name}</Title>
         </StyledTitle>
         <Subtitle>{`Type: ${type || 'No Data'}`}</Subtitle>
-        <StyledDescription>
+        <StyledDescription detailView={detailView}>
           <Description>
             {discogs?.profile
               ? `${discogs.profile}`
