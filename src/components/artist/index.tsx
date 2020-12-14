@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,7 @@ import iconHeartPlus from 'assets/heart-plus.png';
 import iconHeartMinus from 'assets/heart-minus.png';
 import { IArtist } from 'types/artist';
 import FAV_ACTIONS from 'store/favourites/actions';
+import BackPathHandler from 'shared/sessionStorage/backPathHandler';
 
 const StyledGridView = styled.div`
   display: flex;
@@ -112,7 +113,10 @@ const Artist = ({
         <Detail>{country}</Detail>
         <StyledTitle
           titleLink={titleLink}
-          onClick={() => titleLink && history.push(`artist/${mbid}`)}
+          onClick={() => {
+            BackPathHandler.setPath(history.location.pathname);
+            titleLink && history.push(`/artist/${mbid}`);
+          }}
         >
           <Title>{name}</Title>
         </StyledTitle>

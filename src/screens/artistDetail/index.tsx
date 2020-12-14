@@ -78,10 +78,18 @@ const ArtistDetail = () => {
     }
   );
 
-  if (!data && !loading) return <span>Artist #{mbid} was not found</span>;
+  if (!data && !loading)
+    return (
+      <Layout home>
+        <StyledDetail>Artist #{mbid} was not found</StyledDetail>
+      </Layout>
+    );
 
   const artist = data?.lookup.artist;
   const cursor = artist?.releases.pageInfo?.endCursor;
+  const shouldMore =
+    (artist?.releases?.totalCount || 0) >
+    (artist?.releases?.nodes?.length || 1);
   const isFav = favourites && favourites.includes(mbid);
 
   const handleLoadMore = () => {
@@ -121,7 +129,7 @@ const ArtistDetail = () => {
                   {release.title}
                 </Tag>
               ))}
-              {cursor && (
+              {shouldMore && (
                 <StyledButtonContainer>
                   <Button
                     label={
