@@ -1,4 +1,10 @@
-import React, { useState, ReactNodeArray, useMemo } from 'react';
+import React, {
+  useState,
+  ReactNodeArray,
+  useMemo,
+  useRef,
+  useEffect
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -60,8 +66,29 @@ const StyledListItem = styled.div`
 const StyledBottom = styled.div`
   z-index: 100;
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
   left: 0;
+`;
+const StyledSnackbar = styled.div`
+  z-index: 100;
+  position: fixed;
+  height: 30px;
+  width: 100%;
+  padding: 8px 16px 8px 16px;
+  border-radius: 7px;
+  bottom: 8px;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(30, 30, 30, 0.64);
+  color: ${theme.palette.surface};
+  font-size: ${theme.typography.fontSize[16]};
+  font-weight: ${theme.typography.fontWeight.light};
+  cursor: pointer;
+  @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
+    width: auto;
+  }
 `;
 
 interface Props {
@@ -74,6 +101,24 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
   const { favourites } = useSelector((state: AppState) => state.favReducer);
   const history = useHistory();
   const backPath = BackPathHandler.getPath();
+  const favLength = useRef(favourites.length);
+  const [snack, setSnack] = useState('');
+
+  const enqueueSnackbar = (message: string) => {
+    setSnack(message);
+    setTimeout(() => setSnack(''), 3000);
+    favLength.current = favourites.length;
+  };
+
+  useEffect(() => {
+    if (favourites.length !== favLength.current) {
+      enqueueSnackbar(
+        favourites.length > favLength.current
+          ? 'Added to favourites!'
+          : 'Removed from favourites'
+      );
+    }
+  }, [favourites]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -94,7 +139,7 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
         </StyledListItem>
       );
     });
-  }, [favourites.length, dispatch, history]);
+  }, [favourites, dispatch, history]);
 
   return (
     <StyledLayout>
@@ -132,6 +177,9 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
       <StyledBottom>
         <FavButton onClick={() => setDrawerOpen((state) => !state)} />
       </StyledBottom>
+      {!!snack && (
+        <StyledSnackbar onClick={() => setSnack('')}>{snack}</StyledSnackbar>
+      )}
     </StyledLayout>
   );
 };
