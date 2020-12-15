@@ -1,5 +1,5 @@
 const breakpoints = {
-  mobile: 941 // arbitral value
+  mobile: 960 // MUI MD
 };
 
 export default breakpoints;

@@ -102,6 +102,7 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
   const history = useHistory();
   const backPath = BackPathHandler.getPath();
   const favLength = useRef(favourites.length);
+  const isMountedRef = useRef<boolean | null>(null);
   const [snack, setSnack] = useState('');
 
   const enqueueSnackbar = (message: string) => {
@@ -111,13 +112,17 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
   };
 
   useEffect(() => {
-    if (favourites.length !== favLength.current) {
+    isMountedRef.current = true;
+    if (favourites.length !== favLength.current && isMountedRef.current) {
       enqueueSnackbar(
         favourites.length > favLength.current
-          ? 'Added to favourites!'
-          : 'Removed from favourites'
+          ? `${favourites[0].name} added to favourites!`
+          : 'Artist removed from favourites'
       );
     }
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [favourites]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
