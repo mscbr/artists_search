@@ -69,12 +69,7 @@ const ArtistsSearch = () => {
   };
   const handleEnter = () => {
     const cursor = data?.search?.artists?.pageInfo?.endCursor;
-    if (
-      fetchMore === undefined ||
-      loading ||
-      !data?.search?.artists?.pageInfo.endCursor
-    )
-      return;
+    if (fetchMore === undefined || loading || cursor) return;
     fetchMore({
       variables: { after: cursor },
       updateQuery: (prev, { fetchMoreResult }) => {
