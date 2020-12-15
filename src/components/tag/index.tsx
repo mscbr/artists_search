@@ -18,7 +18,7 @@ const StyledTag = styled.div<Props>`
     outline ? theme.palette.surface : theme.palette.editButton.surface};
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  cursor: pointer;
   &:hover {
     background: ${({ outline }) =>
       outline ? theme.palette.editButton.surface : theme.palette.surface};
