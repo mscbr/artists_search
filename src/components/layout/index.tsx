@@ -13,10 +13,10 @@ import theme from 'themming';
 import rewind from 'assets/rewind.png';
 import FavButton from 'components/button/favButton';
 import DeleteButton from 'components/button/deleteButton';
+import Tag from 'components/tag';
 import { AppState } from 'store';
 import { IFavArtist } from 'store/favourites/types';
 import FAV_ACTIONS from 'store/favourites/actions';
-import Tag from 'components/tag';
 import BackPathHandler from 'shared/sessionStorage/backPathHandler';
 import Drawer from './parts/drawer';
 
@@ -147,7 +147,10 @@ const Layout: React.FC<Props> = ({ children, header, home }) => {
         {[
           home ? (
             <StyledHome
-              onClick={() => history.push('/artists/')}
+              onClick={() => {
+                BackPathHandler.resetPath();
+                history.push('/artists/');
+              }}
               key="home-btn"
             >
               HOME

@@ -1,4 +1,5 @@
 import { IPageInfo } from './response';
+import { IRelease } from './release';
 
 export interface IArtist {
   mbid: string;
@@ -28,9 +29,4 @@ export interface IArtistDetail {
   lookup: {
     artist: IArtist;
   };
-}
-
-export interface IRelease {
-  title: string;
-  id: string;
 }

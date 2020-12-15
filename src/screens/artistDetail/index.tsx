@@ -1,7 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 import { GET_ARTIST_DETAIL } from 'api/handlers/artistDetail';
@@ -16,8 +17,10 @@ import Tag from 'components/tag';
 import Title from 'components/typography/title';
 import Surface from 'components/surface';
 import Button from 'components/button';
-import { IArtistDetail, IRelease } from 'types/artist';
+import { IArtistDetail } from 'types/artist';
+import { IRelease } from 'types/release';
 import loadMore from 'assets/load-more.png';
+import BackPathHandler from 'shared/sessionStorage/backPathHandler';
 
 const StyledDetail = styled.div`
   font-size: ${theme.typography.fontSize[12]};
@@ -66,6 +69,7 @@ const surfaceSize = () => {
 };
 
 const ArtistDetail = () => {
+  const history = useHistory();
   const upMobile = useWindowWidth() > theme.breakpoints.mobile;
   const { mbid } = useParams<{ mbid: string }>();
   const favourites = useSelector(
@@ -125,7 +129,14 @@ const ArtistDetail = () => {
             <Surface {...surfaceSize()}>
               <Title>Releases</Title>
               {artist?.releases?.nodes?.map((release) => (
-                <Tag key={release.id} outline>
+                <Tag
+                  key={release.mbid}
+                  outline
+                  onClick={() => {
+                    BackPathHandler.pushPath(history.location.pathname);
+                    history.push(`/release/${release.mbid}`);
+                  }}
+                >
                   {release.title}
                 </Tag>
               ))}

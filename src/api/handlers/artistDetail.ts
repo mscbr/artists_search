@@ -17,7 +17,7 @@ export const GET_ARTIST_DETAIL = gql`
             endCursor
           }
           nodes {
-            id
+            mbid
             title
           }
         }
