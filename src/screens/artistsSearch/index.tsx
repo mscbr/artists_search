@@ -90,6 +90,10 @@ const ArtistsSearch = () => {
   const artists = searchValue && data?.search?.artists?.nodes;
 
   useEffect(() => {
+    if (!searchValue) history.push('/artists/');
+  }, [searchValue, history]);
+
+  useEffect(() => {
     if (searchValue && !data)
       getArtists({ variables: { artist: searchValue, after: null } });
   }, []);

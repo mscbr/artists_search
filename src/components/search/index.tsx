@@ -22,10 +22,6 @@ const StyledSearch = styled.div<{
     font-weight: ${theme.typography.fontWeight.light};
     letter-spacing: ${theme.typography.letterSpacing[1]};
     color: ${theme.palette.label};
-    transition: font-size 0.2s;
-    @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
-      font-size: ${theme.typography.fontSize[18]};
-    }
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -53,9 +49,6 @@ const StyledSearch = styled.div<{
     }};
     border-radius: 5px;
     transition: 0.3s;
-    @media only screen and (min-width: ${theme.breakpoints.mobile}px) {
-      font-size: ${theme.typography.fontSize[18]};
-    }
     margin-bottom: 4px;
   }
 

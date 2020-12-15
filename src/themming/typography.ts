@@ -2,8 +2,7 @@ import { pxToRem } from 'shared/helpers';
 
 const typography = {
   fontFamily: {
-    hind: 'Hind, sans-serif',
-    playfairDisplay: 'Playfair Display, serif'
+    hind: 'Hind, sans-serif'
   },
   fontWeight: {
     light: '300',
